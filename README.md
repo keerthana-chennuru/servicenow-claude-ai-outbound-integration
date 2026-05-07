@@ -20,7 +20,7 @@ Built a full **ServiceNow ↔ Claude AI integration** using Outbound REST Messag
 - ✅ Securely store the Anthropic API key using a Private System Property
 - ✅ Configure an Outbound REST Message to call `api.anthropic.com/v1/messages`
 - ✅ Build a reusable `ClaudeAI` Script Include with all API logic centralized
-- ✅ Create 4 Business Rules that auto-trigger AI responses on Incident events
+- ✅ Create Business Rule that auto-trigger AI responses on Incident events
 - ✅ Create a custom Claude AI Chat table for free-form AI queries
 - ✅ Validate the integration end-to-end with live incident records
 
@@ -45,7 +45,7 @@ Built a full **ServiceNow ↔ Claude AI integration** using Outbound REST Messag
 ```
 Incident Event (Create / Update / Resolve)
         ↓
-Business Rule fires (After)
+Business Rule fires (Before)
         ↓
 Calls ClaudeAI Script Include method
         ↓
@@ -199,7 +199,7 @@ ClaudeAI.prototype = {
 };
 ```
 
-> 💡 **KEY POINT:** This Script Include is written **once**. All 4 Business Rules simply call `new ClaudeAI()` and invoke the relevant method — no duplicated API logic.
+> 💡 **KEY POINT:** This Script Include is written **once**.Business Rule simply call `new ClaudeAI()` and invoke the relevant method — no duplicated API logic.
 
 ---
 
