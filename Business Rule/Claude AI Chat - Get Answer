@@ -1,0 +1,82 @@
+(function executeRule(current, previous) {
+ var question = current.u_question.toString();
+    var claude = new ClaudeAI();
+    var prompt = '';
+
+    // Detect intent from question
+    if (question.toLowerCase().indexOf('summarize') != -1) {
+        // Extract INC number
+        var incMatch = question.match(/INC\d+/i);
+        if (incMatch) {
+            var inc = new GlideRecord('incident');
+            if (inc.get('number', incMatch[0])) {
+                var result = claude.summarizeIncident(
+                    inc.short_description.toString(),
+                    inc.description.toString()
+                );
+                current.u_answer = result.success ? result.message : result.error;
+                current.u_status = result.success ? 'Success' : 'Failed';
+                return;
+            }
+        }
+    }
+
+    if (question.toLowerCase().indexOf('resolve') != -1 ||
+        question.toLowerCase().indexOf('fix') != -1) {
+        var incMatch2 = question.match(/INC\d+/i);
+        if (incMatch2) {
+            var inc2 = new GlideRecord('incident');
+            if (inc2.get('number', incMatch2[0])) {
+                var result2 = claude.suggestResolution(
+                    inc2.short_description.toString(),
+                    inc2.description.toString()
+                );
+                current.u_answer = result2.success ? result2.message : result2.error;
+                current.u_status = result2.success ? 'Success' : 'Failed';
+                return;
+            }
+        }
+    }
+
+    if (question.toLowerCase().indexOf('rca') != -1 ||
+        question.toLowerCase().indexOf('root cause') != -1) {
+        var incMatch3 = question.match(/INC\d+/i);
+        if (incMatch3) {
+            var inc3 = new GlideRecord('incident');
+            if (inc3.get('number', incMatch3[0])) {
+                var result3 = claude.criticalRCA(
+                    inc3.short_description.toString(),
+                    inc3.description.toString()
+                );
+                current.u_answer = result3.success ? result3.message : result3.error;
+                current.u_status = result3.success ? 'Success' : 'Failed';
+                return;
+            }
+        }
+    }
+
+    if (question.toLowerCase().indexOf('kb') != -1 ||
+        question.toLowerCase().indexOf('knowledge') != -1) {
+        var incMatch4 = question.match(/INC\d+/i);
+        if (incMatch4) {
+            var inc4 = new GlideRecord('incident');
+            if (inc4.get('number', incMatch4[0])) {
+                var result4 = claude.generateKBArticle(
+                    inc4.short_description.toString(),
+                    inc4.description.toString(),
+                    inc4.close_notes.toString()
+                );
+                current.u_answer = result4.success ? result4.message : result4.error;
+                current.u_status = result4.success ? 'Success' : 'Failed';
+                return;
+            }
+        }
+    }
+
+    // Any other general question — ask Claude directly
+    var generalResult = claude.sendMessage(question);
+    current.u_answer = generalResult.success ? generalResult.message : generalResult.error;
+    current.u_status = generalResult.success ? 'Success' : 'Failed';
+
+})(current, previous); 
+
