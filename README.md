@@ -229,10 +229,10 @@ ClaudeAI.prototype = {
 
 | BR # | Name | Table | When | Trigger | Method Called |
 |---|---|---|---|---|---|
-| BR 1 | Claude - Summarize Incident | incident | after | Insert | `summarizeIncident()` |
-| BR 2 | Claude - Suggest Resolution | incident | after | Update | `suggestResolution()` |
-| BR 3 | Claude - Critical Incident RCA | incident | after | Insert + Update | `criticalRCA()` |
-| BR 4 | Claude - Generate KB Article | incident | after | Update | `generateKBArticle()` |
+| 1 | Claude - Summarize Incident | incident | after | Insert | `summarizeIncident()` |
+| 2 | Claude - Suggest Resolution | incident | after | Update | `suggestResolution()` |
+| 3 | Claude - Critical Incident RCA | incident | after | Insert + Update | `criticalRCA()` |
+| 4 | Claude - Generate KB Article | incident | after | Update | `generateKBArticle()` |
 
 **Claude AI Chat Business Rule Configuration:**
 
