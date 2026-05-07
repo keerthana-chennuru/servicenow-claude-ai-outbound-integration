@@ -391,6 +391,4 @@ Navigate to the **Claude AI Chat** module in the left navigation menu.
 **Made with ❤️ by Keerthana Chennuru**
 
 ![ServiceNow](https://img.shields.io/badge/Built%20on-ServiceNow-green?style=for-the-badge)
-![Claude AI](https://img.shields.io/badge/Powered%20by-Claude%20AI-purple?style=for-the-badge)
 
-</div>
