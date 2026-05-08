@@ -37,7 +37,8 @@
 ---
 
 ### Script Include Logic Implementation
-<img width="635" height="404" alt="Screenshot 2026-05-07 210314" src="https://github.com/user-attachments/assets/db88e195-1403-4d67-bc1d-c082be7071ef" />
+
+<img width="671" height="408" alt="Screenshot 2026-05-08 230138" src="https://github.com/user-attachments/assets/075cba1d-7d0a-4980-a59a-51815ddfbdc3" />
 
 ---
 
