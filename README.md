@@ -1,4 +1,5 @@
 # 🤖 ServiceNow + Claude AI — Outbound REST Integration
+## Project 1: Claude AI Chat Assistant in ServiceNow
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=6A9FBF&width=600&lines=ServiceNow+%2B+Claude+AI+Integration;Outbound+REST+%7C+Script+Include;Auto+Summarize+%7C+RCA+%7C+KB+Article+Generator" alt="Typing SVG" />
 
