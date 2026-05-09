@@ -341,7 +341,7 @@ Navigate to the **Claude AI Chat** module in the left navigation menu.
 
 ![Outbound REST](https://img.shields.io/badge/Outbound%20REST-API%20Integration-green?style=flat-square)
 ![Script Include](https://img.shields.io/badge/Script%20Include-ClaudeAI%20Class-blue?style=flat-square)
-![Business Rules](https://img.shields.io/badge/Business%20Rules-4%20Auto--Triggers-orange?style=flat-square)
+![Business Rules](https://img.shields.io/badge/Business%20Rule-%20Auto--Triggers-orange?style=flat-square)
 ![Security](https://img.shields.io/badge/Security-Private%20Sys%20Property-red?style=flat-square)
 
 - 🔧 Outbound REST Message configuration with dynamic headers
