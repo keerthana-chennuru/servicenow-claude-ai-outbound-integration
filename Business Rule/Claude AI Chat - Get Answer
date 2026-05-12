@@ -1,107 +1,12 @@
-var ClaudeAI = Class.create();
-ClaudeAI.prototype = {
+(function executeRule(current, previous /*null when async*/) {
 
-    initialize: function() {
-        this.apiKey   = gs.getProperty('anthropic.api.key');
-        this.model    = 'claude-sonnet-4-5';
-        this.endpoint = 'https://api.anthropic.com/v1/messages';
-        this.timeout  = 30000;
-    },
+var claude = new ClaudeAI();
+    var result = claude.summarizeIncident(current.short_description + '', current.description + '' );
 
-    // ─── Core REST caller ────────────────────────────────────────────────────
-    _call: function(systemPrompt, userMessage, maxTokens) {
-        maxTokens = maxTokens || 2048; // safer default than 1024
-        try {
-            var rm = new sn_ws.RESTMessageV2();
-            rm.setEndpoint(this.endpoint);
-            rm.setHttpMethod('POST');
-            rm.setRequestHeader('Content-Type',      'application/json');
-            rm.setRequestHeader('anthropic-version', '2023-06-01');
-            rm.setRequestHeader('x-api-key',         this.apiKey);
-            rm.setHttpTimeout(this.timeout);
+    var note = result.success ? 'AI Summary:\n' + result.message : 'Claude AI Error: ' + result.error;
 
-            var body = JSON.stringify({
-                model:      this.model,
-                max_tokens: maxTokens,
-                system:     systemPrompt,   // <-- system prompt support added
-                messages:   [{ role: 'user', content: userMessage }]
-            });
+    current.setWorkflow(false);     // ← CRITICAL: prevents infinite loop
+    current.work_notes = note;
+    current.update();
 
-            rm.setRequestBody(body);
-            var response    = rm.execute();
-            var status      = response.getStatusCode();
-            var rawBody     = response.getBody();
-
-            if (status == 200) {
-                var parsed = JSON.parse(rawBody);
-                return {
-                    success: true,
-                    message: parsed.content[0].text,
-                    tokens:  parsed.usage.output_tokens
-                };
-            }
-            gs.error('ClaudeAI [' + status + ']: ' + rawBody);
-            return { success: false, error: 'HTTP ' + status + ' — ' + rawBody };
-
-        } catch (ex) {
-            gs.error('ClaudeAI Exception: ' + ex.message);
-            return { success: false, error: ex.message };
-        }
-    },
-
-    // ─── Public: generic single message ──────────────────────────────────────
-    sendMessage: function(userMessage) {
-        return this._call('You are a helpful IT assistant.', userMessage, 1024);
-    },
-
-    // ─── Public: summarize an incident ───────────────────────────────────────
-    summarizeIncident: function(shortDesc, description) {
-        var system = 'You are an ITSM expert. Summarize the incident in 2–3 concise bullet points. Use plain English. No jargon.';
-        var user   = 'Short Description: ' + shortDesc + '\n\nDescription:\n' + description;
-        return this._call(system, user, 512);
-    },
-
-    // ─── Public: suggest resolution steps ────────────────────────────────────
-    suggestResolution: function(shortDesc, description) {
-        var system = 'You are a senior IT support engineer. Provide exactly 3 numbered resolution steps. Be specific and actionable.';
-        var user   = 'Incident: ' + shortDesc + '\n\nDetails:\n' + description;
-        return this._call(system, user, 1024);
-    },
-
-    // ─── Public: root cause analysis ─────────────────────────────────────────
-    criticalRCA: function(shortDesc, description) {
-        var system = [
-            'You are an ITSM root cause analysis expert.',
-            'Structure your response with these sections:',
-            '1. Root Cause',
-            '2. Immediate Actions',
-            '3. Long-term Fix',
-            '4. Escalation Recommendation',
-            'Be concise and technical.'
-        ].join('\n');
-        var user = 'Critical Incident: ' + shortDesc + '\n\nDetails:\n' + description;
-        return this._call(system, user, 2048);
-    },
-
-    // ─── Public: generate KB article ─────────────────────────────────────────
-    generateKBArticle: function(shortDesc, description, resolutionNotes) {
-        var system = [
-            'You are a technical writer for an IT Knowledge Base.',
-            'Generate a KB article in this exact format:',
-            '## Summary',
-            '## Symptoms',
-            '## Root Cause',
-            '## Resolution Steps',
-            '## Prevention',
-            'Use clear, simple language suitable for L1 support.'
-        ].join('\n');
-        var user = [
-            'Incident: '     + shortDesc,
-            '\nDescription:\n' + description,
-            '\nResolution Notes:\n' + (resolutionNotes || 'Not provided')
-        ].join('');
-        return this._call(system, user, 4096);
-    },
-
-    type: 'ClaudeAI'
-};
+})(current, previous);
