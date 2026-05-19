@@ -222,37 +222,10 @@ ClaudeAI.prototype = {
 | Answer | `u_answer` | String (4000) |
 | Status | `u_status` | String (100) |
 
----
-
-### Step 7 — Business Rules Overview
-
-**Path:** System Definition > Business Rules → New
-
-| BR # | Name | Table | When | Trigger | Method Called |
-|---|---|---|---|---|---|
-| 1 | Claude - Summarize Incident | incident | after | Insert | `summarizeIncident()` |
-| 2 | Claude - Suggest Resolution | incident | after | Update | `suggestResolution()` |
-| 3 | Claude - Critical Incident RCA | incident | after | Insert + Update | `criticalRCA()` |
-| 4 | Claude - Generate KB Article | incident | after | Update | `generateKBArticle()` |
-
-**Claude AI Chat Business Rule Configuration:**
-
-| Field | Value |
-|---|---|
-| Name | `Claude AI Chat - Get Answer` |
-| Table | `Claude AI Chat [u_claude_ai_chat]` |
-| Active | ✅ Checked |
-| Advanced | ✅ Checked |
-| When | before |
-| Insert | ✅ Checked |
-| Update | ✅ Checked |
-| Condition | `current.u_question != ''` |
-
-> ⚠️ **CRITICAL:** Always add `current.setWorkflow(false)` before `update()` inside Business Rules. Without it, updating `work_notes` inside the BR triggers the BR again — causing an **infinite loop**.
 
 ---
 
-### Step 8 — Business Rule Script (Claude AI Chat)
+### Step 7 — Business Rule Script (Claude AI Chat)
 
 ```javascript
 (function executeRule(current, previous) {
@@ -295,7 +268,7 @@ ClaudeAI.prototype = {
 
 ---
 
-### Step 9 — Testing the Integration
+### Step 8 — Testing the Integration
 
 Navigate to the **Claude AI Chat** module in the left navigation menu.
 
